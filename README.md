@@ -26,7 +26,7 @@ The `--user-scope` option allows you to define whether the profile will be appli
 
 Specifying `any` here requires root privileges, as it will write these preferences to a system-owned location.
 
-More information on the user preferences system on OS X can be found [here](https://developer.apple.com/library/mac/#documentation/userexperience/Conceptual/PreferencePanes/Concepts/Managing.html).
+More information on the user preferences system on OS X can be found [here](https://developer.apple.com/library/mac/#documentation/userexperience/Conceptual/PreferencePanes/Concepts/Managing.html) and [here](http://developer.apple.com/library/ios/#DOCUMENTATION/MacOSX/Conceptual/BPRuntimeConfig/Articles/UserPreferences.html).
 
 ### Retrieving the current profile
 
