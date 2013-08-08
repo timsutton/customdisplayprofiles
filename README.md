@@ -42,8 +42,7 @@ This could be useful if you want to check the current setting using an idempoten
 
 A more complete dictionary of information can be printed with the `info` action:
 
-<pre><code>
-➜ ./customdisplayprofiles info
+<pre><code>➜ ./customdisplayprofiles info
 {
     CustomProfiles =     {
         1 = "file://localhost/Library/Application%20Support/Adobe/Color/Profiles/SMPTE-C.icc";
