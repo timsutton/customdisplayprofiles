@@ -134,10 +134,12 @@ Available actions:
     if err:
         errorExit("Error in obtaining online display list: %s" % err)
 
-    if opts.display > number_of_online_displays:
+    if opts.display > number_of_online_displays or opts.display <= 0:
         msg = "--display %s is not valid. " % opts.display
         if number_of_online_displays == 1:
-             msg += "There is only one display online."
+            msg += "There is only one display online."
+        elif opts.display <= 0:
+            msg += "Display IDs start at 1."
         else:
             msg += "There are only %s displays online." % number_of_online_displays
         errorExit(msg)
@@ -169,8 +171,8 @@ Available actions:
             print "%s: %s" % (display['human_id'], display['device_info']['DeviceDescription'])
 
     if chosen_action == "current-path":
-        if 'CustomProfiles' in display['device_info'].keys():
-            current_profile_url = display['device_info']['CustomProfiles']['1']
+        if 'CustomProfiles' in target_display['device_info'].keys():
+            current_profile_url = target_display['device_info']['CustomProfiles']['1']
             print Foundation.CFURLCopyFileSystemPath(current_profile_url, Foundation.kCFURLPOSIXPathStyle)
 
     if chosen_action == "info":
