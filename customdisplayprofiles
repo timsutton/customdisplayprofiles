@@ -134,14 +134,22 @@ Available actions:
     if err:
         errorExit("Error in obtaining online display list: %s" % err)
 
-    if opts.display > number_of_online_displays or opts.display <= 0:
-        msg = "--display %s is not valid. " % opts.display
+    # validate --display option
+    invalid_display_id = False
+    if opts.display <= 0:
+        invalid_display_id = True
+        invalid_msg = "Display IDs start at 1."
+
+    if opts.display > number_of_online_displays:
+        invalid_display_id = True
         if number_of_online_displays == 1:
-            msg += "There is only one display online."
-        elif opts.display <= 0:
-            msg += "Display IDs start at 1."
+            invalid_msg = "There is only one display online."
         else:
-            msg += "There are only %s displays online." % number_of_online_displays
+            invalid_msg = "There are only %s displays online." % number_of_online_displays
+
+    if invalid_display_id:
+        msg = "--display %s is not valid. " % opts.display
+        msg += invalid_msg
         errorExit(msg)
 
     # Some logic to ensure the first display is always the main one, but
