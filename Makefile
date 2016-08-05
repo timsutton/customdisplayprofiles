@@ -15,6 +15,4 @@ pkg:
 	cp customdisplayprofiles pkgroot/${INSTALLPATH}
 	pkgbuild --root pkgroot --identifier ${PKGID} --version ${PKGVERSION} ${BUILDPATH}/${PKGNAME}-${PKGVERSION}.pkg
 munki:
-	munkiimport --unattended-install --catalog=testing -n --subdirectory ${MUNKI_REPO_SUBDIR} --developer='Tim Sutton' ${BUILDPATH}/${PKGNAME}-${PKGVERSION}.pkg && makecatalogs
-
-
+	munkiimport --unattended-install --catalog=testing -n --subdirectory ${MUNKI_REPO_SUBDIR} --developer='Tim Sutton' ${BUILDPATH}/${PKGNAME}-${PKGVERSION}.pkg
