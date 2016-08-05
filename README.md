@@ -65,3 +65,20 @@ A more complete dictionary of information can be printed with the `info` action:
 ## Sample wrapper script
 
 There's a (very simple) example script in the [sample-helper-login-script](https://github.com/timsutton/customdisplayprofiles/blob/master/sample-helper-login-script/configure_display_profiles.sh) folder, which demonstrates how you could wrap this utility in an environment where you don't manage the ICC profiles directly. Someone calibrating a display would only need to drop the profile in a known folder location, indexed by display number, and at login for all users, the desired color profiles are configured for each online display.
+
+## Building a pkg
+
+You might want to build a pkg to deploy the script to one or more Macs in your environment. To create a pkg so, you can run the `make` command in the repo folder. 
+The included Makefile will be used to create a package which will install `customdisplayprofiles` in `/usr/local/bin`
+If you'd like to install the script at a different path, you can override the default when creating the package with  
+`make INSTALLPATH=/path/to/installfolder`
+
+If you're also using munki, there's a `make munki` command to import the package into your munki repository.
+
+```
+# first run make to create the pkg
+make
+
+# Then, import the package into munki
+make MUNKI_REPO_SUBDIR=util munki
+```
