@@ -61,7 +61,7 @@ objc.parseBridgeSupport("""<?xml version='1.0'?>
 
 def errorExit(msg, code=1):
     print >> sys.stderr, msg
-    exit(code)
+    sys.exit(code)
 
 
 def verify_profile(profile_url):
@@ -111,7 +111,7 @@ Available actions:
 
     if len(args) == 0:
         o.print_help()
-        exit(1)
+        sys.exit(1)
 
     if opts.user_scope:
         if opts.user_scope not in possible_user_scopes:
@@ -121,7 +121,7 @@ Available actions:
 
     if args[0] not in possible_actions.keys():
         o.print_help()
-        exit(1)
+        sys.exit(1)
 
     chosen_action = args[0]
 
