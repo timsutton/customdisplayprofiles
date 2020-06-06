@@ -196,7 +196,7 @@ Available actions:
             if not os.path.exists(profile_path):
                 sys.exit("Can't locate profile at path %s!" % profile_path)
             if os.path.isdir(profile_path):
-                errorExit("%s is a directory, not a profile!")
+                errorExit("'%s' is a directory, not a profile!" % profile_path)
             profile_url = Foundation.CFURLCreateFromFileSystemRepresentation(None, profile_path, len(profile_path), False)
             verify_profile(profile_url)
 
