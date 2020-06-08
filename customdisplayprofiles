@@ -7,6 +7,8 @@
 #
 # Copyright 2013 Timothy Sutton
 
+from __future__ import print_function
+
 import os
 import objc
 import Foundation
@@ -176,12 +178,12 @@ Available actions:
 
     if chosen_action == 'displays':
         for display in displays:
-            print "%s: %s" % (display['human_id'], display['device_info']['DeviceDescription'])
+            print("%s: %s" % (display['human_id'], display['device_info']['DeviceDescription']))
 
     if chosen_action == "current-path":
         if 'CustomProfiles' in target_display['device_info'].keys():
             current_profile_url = target_display['device_info']['CustomProfiles']['1']
-            print Foundation.CFURLCopyFileSystemPath(current_profile_url, Foundation.kCFURLPOSIXPathStyle)
+            print(Foundation.CFURLCopyFileSystemPath(current_profile_url, Foundation.kCFURLPOSIXPathStyle))
 
     if chosen_action == "info":
         pprint(target_display['device_info'])
