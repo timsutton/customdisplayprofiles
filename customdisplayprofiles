@@ -200,7 +200,7 @@ Available actions:
                 sys.exit("Can't locate profile at path %s!" % profile_path)
             if os.path.isdir(profile_path):
                 errorExit("'%s' is a directory, not a profile!" % profile_path)
-            profile_url = Foundation.CFURLCreateFromFileSystemRepresentation(None, profile_path, len(profile_path), False)
+            profile_url = Foundation.CFURLCreateFromFileSystemRepresentation(None, profile_path.encode('utf-8'), len(profile_path), False)
             verify_profile(profile_url)
 
         user_scope = eval('Foundation.kCFPreferences%sUser' % opts.user_scope.capitalize())
