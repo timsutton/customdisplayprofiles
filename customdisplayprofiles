@@ -9,14 +9,15 @@
 
 from __future__ import print_function
 
-import os
-import objc
-import Foundation
-import Quartz
 import optparse
+import os
 import sys
-
 from pprint import pprint
+
+import Foundation
+import objc
+import Quartz
+
 
 # - below is bridge metadata of we need of the ColorSync framework
 # - last two arguments of ColorSyncProfileVerify have additional
