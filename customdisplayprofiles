@@ -15,53 +15,9 @@ from pprint import pprint
 import Foundation
 import objc
 import Quartz
+from ColorSync import *
 
 
-# - below is bridge metadata of we need of the ColorSync framework
-# - last two arguments of ColorSyncProfileVerify have additional
-#   type_modifier metadata for 'out'-type arguments so that they
-#   can be passed by reference, though this currently does not seem
-#   to function correctly
-objc.parseBridgeSupport("""<?xml version='1.0'?>
-<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
-<signatures version='1.0'>
-    <cftype name='ColorSyncProfileRef' type='^{ColorSyncProfile=}' tollfree='__NSCFType' gettypeid_func='ColorSyncProfileGetTypeID'/>
-    <constant name='kColorSyncDeviceDefaultProfileID' type='^{__CFString=}'/>
-    <constant name='kColorSyncDisplayDeviceClass' type='^{__CFString=}'/>
-    <constant name='kColorSyncProfile' type='^{__CFString=}'/>
-    <constant name='kColorSyncProfileUserScope' type='^{__CFString=}'/>
-    <function name='CGDisplayCreateUUIDFromDisplayID'>
-    <arg type='I'/>
-    <retval already_retained='true' type='^{__CFUUID=}'/>
-    </function>
-    <function name='ColorSyncDeviceCopyDeviceInfo'>
-    <arg type='^{__CFString=}'/>
-    <arg type='^{__CFUUID=}'/>
-    <retval already_retained='true' type='^{__CFDictionary=}'/>
-    </function>
-    <function name='ColorSyncDeviceSetCustomProfiles'>
-    <arg type='^{__CFString=}'/>
-    <arg type='^{__CFUUID=}'/>
-    <arg type='^{__CFDictionary=}'/>
-    <retval type='B'/>
-    </function>
-    <function name='ColorSyncProfileCreateWithURL'>
-    <arg type='^{__CFURL=}'/>
-    <arg type='^^{_CFError}' type_modifier='o'/>
-    <retval already_retained='true' type='^{ColorSyncProfile=}'/>
-    </function>
-    <function name='ColorSyncProfileVerify'>
-    <arg type='^{ColorSyncProfile=}'/>
-    <arg type='^^{_CFError}' type_modifier='o'/>
-    <arg type='^^{_CFError}' type_modifier='o'/>
-    <retval type='B'/>
-    </function>
-</signatures>
-""", globals(), '/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ColorSync.framework')
-
-
-def errorExit(msg, code=1):
-    print >> sys.stderr, msg
 def error_exit(msg, code=1):
     print(msg, file=sys.stderr)
     sys.exit(code)
@@ -158,17 +114,6 @@ Available actions:
         msg = "--display %s is not valid. " % opts.display
         msg += invalid_msg
         error_exit(msg)
-
-    # Some logic to ensure the first display is always the main one, but
-    # might confuse things if >2 displays connected.
-    # main_display_id = Quartz.CGMainDisplayID()
-    # if number_of_online_displays == 2:
-    #     # main display always seems to be the first ID, but in the opposite
-    #     # case, swap them so it's the first
-    #     if display_ids[1] == main_display_id:
-    #         temp = display_ids[0]
-    #         display_ids[0] = main_display_id
-    #         display_ids[1] = temp
 
     displays = []
     for index, display_id in enumerate(display_ids):
