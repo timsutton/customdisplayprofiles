@@ -5,8 +5,7 @@
 # A command-line utility for setting custom ColorSync ICC profiles
 # for connected displays.
 #
-# Copyright 2013 Timothy Sutton
-
+# Copyright 2013-2022 Timothy Sutton
 
 import optparse
 import os
