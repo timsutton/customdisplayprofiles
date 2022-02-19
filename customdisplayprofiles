@@ -51,25 +51,35 @@ def main():
         "unset": "Unset custom profile for device",
     }
     possible_user_scopes = ["any", "current"]
-    default_user_scope = 'current'
+    default_user_scope = "current"
 
     usage = """%s <action> [options] [/path/to/profile]
 
 Available actions:
-""" % (os.path.basename(__file__))
+""" % (
+        os.path.basename(__file__)
+    )
     for k, v in possible_actions.items():
         usage += "    {:<20}{}\n".format(k, v)
 
     o = optparse.OptionParser(usage=usage)
-    o.add_option('-d', '--display', type='int', default=1,
+    o.add_option(
+        "-d",
+        "--display",
+        type="int",
+        default=1,
         help="Display number to target the action given. A value of '1' "
-             "is the default, and means the main display. Second display "
-             "is '2', etc. Verify the numbers using the 'displays' action.")
-    o.add_option('-u', '--user-scope', default=default_user_scope,
+        "is the default, and means the main display. Second display "
+        "is '2', etc. Verify the numbers using the 'displays' action.",
+    )
+    o.add_option(
+        "-u",
+        "--user-scope",
+        default=default_user_scope,
         help="User scope in which to apply the custom profile, when used with the "
-             "'set' action. Either 'any' or 'current'. 'any' requires "
-             "root privileges. Defaults to %s."
-             % (default_user_scope))
+        "'set' action. Either 'any' or 'current'. 'any' requires "
+        "root privileges. Defaults to %s." % (default_user_scope),
+    )
     opts, args = o.parse_args()
 
     if len(args) == 0:
@@ -78,8 +88,10 @@ Available actions:
 
     if opts.user_scope:
         if opts.user_scope not in possible_user_scopes:
-            error_exit("--user-scope must be one of: %s" % ", ".join(possible_user_scopes))
-        if opts.user_scope == 'any' and os.getuid() != 0:
+            error_exit(
+                "--user-scope must be one of: %s" % ", ".join(possible_user_scopes)
+            )
+        if opts.user_scope == "any" and os.getuid() != 0:
             error_exit("You must have root privileges to modify the any-user scope!")
 
     if args[0] not in possible_actions.keys():
@@ -91,9 +103,9 @@ Available actions:
     max_displays = 8
     # display list retrieval borrowed from Greg Neagle's mirrortool.py
     # https://gist.github.com/gregneagle/5722568
-    (err, display_ids, 
-     number_of_online_displays) = Quartz.CGGetOnlineDisplayList(
-                                                    max_displays, None, None)
+    (err, display_ids, number_of_online_displays) = Quartz.CGGetOnlineDisplayList(
+        max_displays, None, None
+    )
     if err:
         error_exit("Error in obtaining online display list: %s" % err)
 
@@ -108,7 +120,9 @@ Available actions:
         if number_of_online_displays == 1:
             invalid_msg = "There is only one display online."
         else:
-            invalid_msg = "There are only %s displays online." % number_of_online_displays
+            invalid_msg = (
+                "There are only %s displays online." % number_of_online_displays
+            )
 
     if invalid_display_id:
         msg = "--display %s is not valid. " % opts.display
@@ -118,54 +132,72 @@ Available actions:
     displays = []
     for index, display_id in enumerate(display_ids):
         display = {}
-        display['id'] = display_id
-        display['human_id'] = index + 1
-        display['device_info'] = ColorSyncDeviceCopyDeviceInfo(
-            kColorSyncDisplayDeviceClass, CGDisplayCreateUUIDFromDisplayID(display_id))
+        display["id"] = display_id
+        display["human_id"] = index + 1
+        display["device_info"] = ColorSyncDeviceCopyDeviceInfo(
+            kColorSyncDisplayDeviceClass, CGDisplayCreateUUIDFromDisplayID(display_id)
+        )
         displays.append(display)
 
     target_display = displays[opts.display - 1]
 
-    if chosen_action == 'displays':
+    if chosen_action == "displays":
         for display in displays:
-            print("%s: %s" % (display['human_id'], display['device_info']['DeviceDescription']))
+            print(
+                "%s: %s"
+                % (display["human_id"], display["device_info"]["DeviceDescription"])
+            )
 
     if chosen_action == "current-path":
-        if 'CustomProfiles' in target_display['device_info'].keys():
-            current_profile_url = target_display['device_info']['CustomProfiles']['1']
-            print(Foundation.CFURLCopyFileSystemPath(current_profile_url, Foundation.kCFURLPOSIXPathStyle))
+        if "CustomProfiles" in target_display["device_info"].keys():
+            current_profile_url = target_display["device_info"]["CustomProfiles"]["1"]
+            print(
+                Foundation.CFURLCopyFileSystemPath(
+                    current_profile_url, Foundation.kCFURLPOSIXPathStyle
+                )
+            )
 
     if chosen_action == "info":
-        pprint(target_display['device_info'])
+        pprint(target_display["device_info"])
 
     if chosen_action in ["set", "unset"]:
         if chosen_action == "unset":
             profile_url = Foundation.kCFNull
         else:
             if len(args) < 2:
-                error_exit("The 'set' action requires a path to an ICC profile as an argument.")
+                error_exit(
+                    "The 'set' action requires a path to an ICC profile as an argument."
+                )
             profile_path = args[1]
             if not os.path.exists(profile_path):
                 sys.exit("Can't locate profile at path %s!" % profile_path)
             if os.path.isdir(profile_path):
                 error_exit("'%s' is a directory, not a profile!" % profile_path)
-            profile_url = Foundation.CFURLCreateFromFileSystemRepresentation(None, profile_path.encode('utf-8'), len(profile_path), False)
+            profile_url = Foundation.CFURLCreateFromFileSystemRepresentation(
+                None, profile_path.encode("utf-8"), len(profile_path), False
+            )
             verify_profile(profile_url)
 
-        user_scope = eval('Foundation.kCFPreferences%sUser' % opts.user_scope.capitalize())
+        user_scope = eval(
+            "Foundation.kCFPreferences%sUser" % opts.user_scope.capitalize()
+        )
 
         # info on config dict required:
         # /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ColorSync.framework/Versions/A/Headers/ColorSyncDevice.h
         # http://web.archiveorange.com/archive/print/YwdQZYJTswvvG79VTuyD
-        new_profile_dict = { kColorSyncDeviceDefaultProfileID: profile_url,
-                             kColorSyncProfileUserScope: user_scope }
+        new_profile_dict = {
+            kColorSyncDeviceDefaultProfileID: profile_url,
+            kColorSyncProfileUserScope: user_scope,
+        }
 
         success = ColorSyncDeviceSetCustomProfiles(
-                    kColorSyncDisplayDeviceClass,
-                    target_display['device_info']['DeviceID'],
-                    new_profile_dict)
+            kColorSyncDisplayDeviceClass,
+            target_display["device_info"]["DeviceID"],
+            new_profile_dict,
+        )
         if not success:
             error_exit("Setting custom profile was unsuccessful!")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
