@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 #
 # customdisplayprofiles
 #
@@ -10,9 +10,14 @@
 # python3 revision for macOS 12.3 written by Jonathon Irons, 3/17/2022
 
 import os
+
+# These three modules all come from the PyPI 'pyobjc' package
+# This is NOT the Foundation package
 import Foundation
+# This is NOT the Quartz package
 import Quartz
 import ColorSync
+
 import optparse
 import sys
 
