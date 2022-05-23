@@ -4,6 +4,14 @@ This is a simple command-line Python script that can check, set or unset a custo
 
 ## Usage
 
+### Installing Python dependencies
+
+This script requires the 'pyobjc' package available through pip, e.g.:
+
+`pip3 install pyobjc`
+
+NOTE: This script calls for `import Foundation` and `import Quartz`, but these are not the modules installed through `pip install Foundation` or `pip install Quartz`.
+
 ### Setting a profile
 
 Use the `set` action to set a profile (as the user running the command) for the main display.
