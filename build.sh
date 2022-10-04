@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script will output a single self-contained executable at
+# the output specified to pyinstaller's `--distpath` option
+
 set -eu -o pipefail
 
 # Pick a Python distribution to use, we'll use Apple's for now
@@ -17,24 +20,9 @@ pip install -U pip
 pip install -r requirements-build.txt
 
 # build it
-# TODO: Can we improve the startup time? Even on an M1 Max it seems to take 4 seconds to 
-# pyinstaller \
-#   --clean \
-#   --log-level DEBUG \
-#   --onefile \
-#   --distpath dist-onefile \
-#   customdisplayprofiles.spec
-
 pyinstaller \
   --clean \
   --log-level DEBUG \
   --distpath dist-onefile \
   --onefile \
   customdisplayprofiles
-
-# pyinstaller \
-#   --clean \
-#   --log-level DEBUG \
-#   --distpath dist-onedir \
-#   --onedir \
-#   customdisplayprofiles

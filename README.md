@@ -2,15 +2,22 @@
 
 This is a simple command-line Python script that can check, set or unset a custom ColorSync ICC profile for a given display. It uses PyObjC and the most current (as of 2013) ColorSync API to do this.
 
-## Usage
+## Installation
 
-### Installing Python dependencies
+You can either **(1)** download a pre-compiled executable, or **(2)** execute the script directly with a Python runtime you have available.
 
-This script requires the 'pyobjc' package available through pip, e.g.:
+### 1. Pre-compiled executable
+
+Download the latest version from the [Releases](https://github.com/timsutton/customdisplayprofiles/releases/latest) section, make the file executable and run it. The executable contains the necessary runtime and libraries, bundled via [PyInstaller](https://pyinstaller.org/).
+
+### 2. Execute the script directly
+
+Clone or download this repo (or just the single `customdisplayprofiles` script) and execute it directly. You'll also need to have the [PyObjC PyPi package](https://pypi.org/project/pyobjc/) installed and available in your Python runtime's environment:
 
 `pip3 install pyobjc`
 
-NOTE: This script calls for `import Foundation` and `import Quartz`, but these are not the modules installed through `pip install Foundation` or `pip install Quartz`.
+
+## Usage
 
 ### Setting a profile
 
@@ -26,6 +33,7 @@ If you want to get a list of displays with their associated index:
 
 `customdisplayprofiles displays`
 
+
 ### Configurable user scope
 
 The `--user-scope` option allows you to define whether the profile will be applied to the "Current" or "Any" user domain, which may allow you set this preference as a default for all users:
@@ -36,6 +44,7 @@ Specifying `any` here requires root privileges, as it will write these preferenc
 
 More information on the user preferences system on OS X can be found [here](https://developer.apple.com/library/mac/#documentation/userexperience/Conceptual/PreferencePanes/Concepts/Managing.html) and [here](http://developer.apple.com/library/ios/#DOCUMENTATION/MacOSX/Conceptual/BPRuntimeConfig/Articles/UserPreferences.html).
 
+
 ### Retrieving the current profile
 
 The full path to an ICC profile can be printed to stdout:
@@ -45,6 +54,7 @@ The full path to an ICC profile can be printed to stdout:
 This could be useful if you want to check the current setting using an idempotent login script or a configuration framework like Puppet.
 
 `current-path` will output nothing if there is no profile currently set for that display.
+
 
 ### Full details
 
@@ -70,9 +80,11 @@ A more complete dictionary of information can be printed with the `info` action:
 }
 </pre></code>
 
+
 ## Sample wrapper script
 
 There's a (very simple) example script in the [sample-helper-login-script](https://github.com/timsutton/customdisplayprofiles/blob/master/sample-helper-login-script/configure_display_profiles.sh) folder, which demonstrates how you could wrap this utility in an environment where you don't manage the ICC profiles directly. Someone calibrating a display would only need to drop the profile in a known folder location, indexed by display number, and at login for all users, the desired color profiles are configured for each online display.
+
 
 ## Building a pkg
 
